@@ -1,114 +1,52 @@
 import React, { useState, useEffect } from 'react';
-// import faqData from '../data/faq.json';
-import ChatMessage from './ChatMessage';
-import ChoiceList from './ChoiceList';
+import useFAQ from '../utils/useFAQ';
 
-// export default function ChatApp() {
-//   const [messages, setMessages] = useState([]);
-//   const [currentNode, setCurrentNode] = useState(faqData[0]);
+const ChatApp = () => {
+  // const handleSelect = (choiceId) => {
+  //   processAddLogs(choiceId);
+  // };
+  const { getLogs, processAddLogs, isSystem, isUser, isChoice, isMessage } = useFAQ(); // 
 
-//   const handleChoice = (choice) => {
-//     setMessages((prev) => [
-//       ...prev,
-//       { from: 'user', text: choice.label }
-//     ]);
-
-//     if (choice.faq) {
-//       setMessages((prev) => [
-//         ...prev,
-//         { from: 'user', text: choice.label },
-//         { from: 'system', text: choice.faq }
-//       ]);
-//     } else {
-//       const next = faqData.find(q => q.id === choice.nextId);
-//       if (next) {
-//         setCurrentNode(next);
-//         setMessages((prev) => [
-//           ...prev,
-//           { from: 'system', text: next.question }
-//         ]);
-//       }
-//     }
-//   };
-
-//   useEffect(() => {
-//     setMessages([{ from: 'system', text: currentNode.question }]);
-//   }, []);
-
-//   return (
-//     <div>
-//       {messages.map((msg, idx) => (
-//         <ChatMessage key={idx} from={msg.from} text={msg.text} />
-//       ))}
-//       <ChoiceList choices={currentNode.choices} onSelect={handleChoice} />
-//     </div>
-//   );
-// }
-
-import faq2Data from '../data/faq2.json';
-
-export default function ChatApp() {
-  const [messages, setMessages] = useState([]);
-  const [step, setStep] = useState('service');
-  const [selectedService, setSelectedService] = useState(null);
-  const [selectedCategory1, setSelectedCategory1] = useState(null);
-  const [selectedCategory2, setSelectedCategory2] = useState(null);
-
-  const handleChoice = (choice) => {
-    setMessages((prev) => [...prev, { from: 'user', text: choice.label }]);
-
-    if (step === 'service') {
-      setSelectedService(choice.id);
-      setStep('category_1');
-      const nextChoices = faq2Data.category_1.filter(c => c.service_id === choice.id);
-      setMessages((prev) => [...prev, { from: 'system', text: 'カテゴリを選んでください。' }]);
-    } else if (step === 'category_1') {
-      setSelectedCategory1(choice.id);
-      setStep('category_2');
-      const nextChoices = faq2Data.category_2.filter(c => c.category1_id === choice.id);
-      setMessages((prev) => [...prev, { from: 'system', text: '詳細カテゴリを選んでください。' }]);
-    } else if (step === 'category_2') {
-      setSelectedCategory2(choice.id);
-      setStep('faq');
-      const faqs = faq2Data.FAQ.filter(f =>
-        f.service_id === selectedService &&
-        f.category1_id === selectedCategory1 &&
-        f.category2_id === choice.id
+  const LogElem = ({log}) => {
+    if (isMessage(log.from)) {
+      return (
+        <ChatMessage from={log.from} text={log.text} />
       );
-      faqs.forEach(faq => {
-        setMessages((prev) => [
-          ...prev,
-          { from: 'system', text: `Q: ${faq.label}` },
-          { from: 'system', text: `A: ${faq.answer}` }
-        ]);
-      });
-    }
+    } else
+    if (isChoice(log.from)) {
+      return (
+        <ChoiceList text={log.text} choice_id={log.choiceId} />
+      );
+    };
   };
 
-  const getChoices = () => {
-    if (step === 'service') {
-      return faq2Data.service;
-    } else if (step === 'category_1') {
-      return faq2Data.category_1.filter(c => c.service_id === selectedService);
-    } else if (step === 'category_2') {
-      return faq2Data.category_2.filter(c => c.category1_id === selectedCategory1);
-    } else {
-      return [];
-    }
-  };
+  const ChatMessage = ({ from, text }) => {
+    return (
+      <div style={{ textAlign: isUser(from) ? 'right' : 'left' }}>
+        <div style={{ display: 'inline-block', padding: '6px', margin: '4px', backgroundColor: '#eee' }}>
+          {text}
+        </div>
+      </div>
+    );
+  }
 
-  useEffect(() => {
-    setMessages([{ from: 'system', text: 'サービスを選んでください。' }]);
-  }, []);
+  const ChoiceList = ({ text, choice_id }) => {
+    return (
+      <div>
+        <button key={choice_id} onClick={() => processAddLogs(choice_id)} style={{ margin: '4px' }}>
+          {text}
+        </button>
+      </div>
+    );
+  };
 
   return (
     <div>
-      {messages.map((msg, idx) => (
-        <ChatMessage key={idx} from={msg.from} text={msg.text} />
+      {getLogs().map(log => (
+        <LogElem log={log} />
       ))}
-      {step !== 'faq' && (
-        <ChoiceList choices={getChoices()} onSelect={handleChoice} />
-      )}
     </div>
   );
-}
+};
+
+export default ChatApp;
