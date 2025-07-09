@@ -1,7 +1,7 @@
 import logo from './logo.svg';
 import { useState } from 'react'
 import './App.css';
-import ChatApp from './components/ChatApp_new';
+import ChatApp from './components/ChatApp';
 
 function App() {
   const [count, setCount] = useState(0)
