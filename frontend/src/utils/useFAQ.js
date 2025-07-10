@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import questionsJson from '../data/questions.json';
 import choicesJson from '../data/choices.json';
@@ -10,7 +10,6 @@ const useFAQ = () => {
             choices: choicesJson,
             answers: answersJson,
         });
-    const [error, setError] = useState(null);
     const [logs, setLog] = useState([]);
 
 //   useEffect(() => {
@@ -30,8 +29,13 @@ const useFAQ = () => {
 //       });
 //   }, []);
 
+    const initialized = useRef(false); // 初期化フラグ
+
     useEffect(() => {
-        initLog();
+        if (!initialized.current) {
+            initLog();
+            initialized.current = true;
+        }
     }, []);
 
     // all_list
@@ -47,6 +51,10 @@ const useFAQ = () => {
         return faqs['answers'];
     };
 
+    const answersIncludesWord = (word) => {
+        return answers().filter(qa => qa.answer.includes(word));
+    };
+
     // condition_list
 
     const questionByChoice = (choice_id) => {
@@ -58,7 +66,7 @@ const useFAQ = () => {
     };
 
     const answersByChoice = (choice_id) => {
-        return choices().filter(a => a.choice_id === choice_id) || [];
+        return answers().filter(a => a.choice_id === choice_id) || [];
     };
 
     // one
@@ -75,7 +83,7 @@ const useFAQ = () => {
     };
 
     const isQuestionExist = (choice_id) => {
-        return choicesByQuestion(choice_id).length > 0;
+        return Boolean(questionByChoice(choice_id));
     };
 
     const isAnswerExist = (choice_id) => {
@@ -85,19 +93,21 @@ const useFAQ = () => {
     // 
 
     const initLog = () => {
-        const initialQ = questionByChoice(1)
+        const initialQ = questionByChoice(1);
         const initialLog = questionLog(initialQ);
-        // addLog(initialLog);
-        // const c = choicesByQuestion(1).map(c => choiceLog(c));
-        // addLogs(c);
+        const c = choicesByQuestion(1).map(c => choiceLog(c));
+        addLog(initialLog);
+        addLogs(c);
     };
 
     const logsFromChoices = (choice_id) => {
         const l = label(choice(choice_id));
         if (isQuestionExist(choice_id)) {
-            const q = questionLog(questionByChoice(choice_id));
+            const q = questionByChoice(choice_id)
+            const ql = questionLog(q);
+            console.log(q)
             const c = choicesByQuestion(q.id).map(c => choiceLog(c));
-            return [l, q, ...c];
+            return [l, ql, ...c];
         } else
         if (isAnswerExist(choice_id)) {
             const qas = answersByChoice(choice_id).map(qa => answerLog(qa));
@@ -107,9 +117,16 @@ const useFAQ = () => {
         return [l, errorLog];
     };
 
+    const logsFromSearch = (word) => {
+        const l = inputLabel(word);
+        const qas = answersIncludesWord(word).map(qa => answerLog(qa));
+        return [l, ...qas];
+    };
+
     const systemValue = 'system';
     const userValue = 'user';
     const choiceValue = 'choice';
+    const answerValue = 'answer';
 
     const isSystem = (from) => {
         return (from === systemValue);
@@ -126,28 +143,56 @@ const useFAQ = () => {
     const isMessage = (from) => {
         return [systemValue, userValue].includes(from);
     };
+    
+    const isAnswer = (from) => {
+        return (from === answerValue);
+    };
 
-    const systemLog = (from, text, choiceId) => {
-        const subject = [systemValue, userValue, choiceValue][from];
-        return {'from': subject, 'text': text, 'choiceId': choiceId || null};
+    const logType = (from, type) => {
+        switch(type) {
+            case 0:
+                return isSystem(from)
+            case 1:
+                return isUser(from)
+            case 2:
+                return isChoice(from)
+            case 3:
+                return isMessage(from)
+            case 4:
+                return isAnswer(from)
+            default:
+                return false
+        };
+    };
+
+    const systemLog = (from, text) => {
+        const subject = [systemValue, userValue, choiceValue, answerValue][from];
+        return {'from': subject, 'text': text};
     };
 
     const questionLog = (q) => {
-        return systemLog(0, q.text);
+        const log = systemLog(0, q.text);
+        log['questionId'] = q.id;
+        return log;
     };
 
     const label = (c) => {
         return systemLog(1, c.text);
     };
 
+    const inputLabel = (word) => {
+        return systemLog(1, word);
+    }
+
     const choiceLog = (c) => {
-        return systemLog(2, c.text, c.id);
+        const log = systemLog(2, c.text);
+        log['choiceId'] = c.id;
+        return log;
     };
 
     const answerLog = (QA) => {
-        const q = systemLog(0, QA.question);
-        const a = systemLog(0, QA.answer);
-        return [q, a];
+        const q = systemLog(3, [QA.question, QA.answer]);
+        return q;
     };
 
     const addLog = (log) => {
@@ -163,17 +208,18 @@ const useFAQ = () => {
         addLogs(newLogs);
     };
 
-    const getLogs = () => {
-        return logs;
+    const processSearchLogs = (word) => {
+        const newLogs = logsFromSearch(word);
+        addLogs(newLogs);
     }
 
+    const getLogs = () => {
+        return logs;
+    };
+
     return {
-        questions, choices, answers,
-        questionByChoice, choicesByQuestion, answersByChoice,
-        question, choice, answer,
-        logsFromChoices, initLog, addLog,
-        getLogs, processAddLogs,
-        isSystem, isUser, isChoice, isMessage
+        getLogs, processAddLogs, processSearchLogs,
+        logType
     };
 };
 

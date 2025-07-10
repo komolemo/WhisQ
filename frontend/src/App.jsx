@@ -1,6 +1,7 @@
 import logo from './logo.svg';
 import { useState } from 'react'
 import './App.css';
+import './index.css';
 import ChatApp from './components/ChatApp';
 
 function App() {

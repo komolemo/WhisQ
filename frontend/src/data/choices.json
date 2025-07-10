@@ -4,9 +4,9 @@
     { "id": 3, "text": "sakidori", "question_id": 1},
     { "id": 4, "text": "eラーニング育成パック", "question_id": 1},
     { "id": 5, "text": "upcoming", "question_id": 1},
-    { "id": 6, "text": "コンテンツ", "question_id": 4},
-    { "id": 7, "text": "受講管理", "question_id": 4},
-    { "id": 8, "text": "納品", "question_id": 4},
+    { "id": 6, "text": "コンテンツ", "question_id": 5},
+    { "id": 7, "text": "受講管理", "question_id": 5},
+    { "id": 8, "text": "納品", "question_id": 5},
     { "id": 9, "text": "学習コンテンツ", "question_id": 7},
     { "id": 10, "text": "システム", "question_id": 7},
     { "id": 11, "text": "管理運用", "question_id": 7}
