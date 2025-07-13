@@ -1,18 +1,16 @@
-import logo from './logo.svg';
-import { useState } from 'react'
-import './App.css';
-import './index.css';
-import ChatApp from './components/ChatApp';
+import { BrowserRouter } from 'react-router-dom';
+import AppRoutes from './routes';
+import FAQchat from './components/FAQchat';
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <div>
-      <h1>FAQチャット</h1>
-      <ChatApp />
-    </div>
-  )
+    <BrowserRouter>
+      <AppRoutes />
+    </BrowserRouter>
+    // <div>
+    //   <FAQchat />
+    // </div>
+  );
 }
 
-export default App
+export default App;

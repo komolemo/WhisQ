@@ -1,0 +1,19 @@
+.bubble_left::before {
+  content: '';
+  position: absolute;
+  top: 6px; /* フキダシの上下位置を調整 */
+  left: -18px; /* フキダシを左側に配置 */
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent #1C6CB3 transparent transparent;
+}
+
+.bubble_right::before {
+  content: '';
+  position: absolute;
+  top: 6px; /* フキダシの上下位置を調整 */
+  right: -18px; /* フキダシを右側に配置 */
+  border-width: 10px;
+  border-style: solid;
+  border-color: transparent transparent transparent #1C6CB3;
+}

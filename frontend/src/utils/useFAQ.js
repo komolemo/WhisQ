@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useRef } from 'react';
 
-import questionsJson from '../data/questions.json';
-import choicesJson from '../data/choices.json';
-import answersJson from '../data/answers.json';
+import questionsJson from '../data/faq/questions.json';
+import choicesJson from '../data/faq/choices.json';
+import answersJson from '../data/faq/answers.json';
 
 const useFAQ = () => {
     const [faqs, setFaqs] = useState({
@@ -52,7 +52,7 @@ const useFAQ = () => {
     };
 
     const answersIncludesWord = (word) => {
-        return answers().filter(qa => qa.answer.includes(word));
+        return answers().filter(qa => (qa.answer.includes(word) || qa.question.includes(word)));
     };
 
     // condition_list
@@ -94,6 +94,7 @@ const useFAQ = () => {
 
     const initLog = () => {
         const initialQ = questionByChoice(1);
+        console.log(questionsJson)
         const initialLog = questionLog(initialQ);
         const c = choicesByQuestion(1).map(c => choiceLog(c));
         addLog(initialLog);
@@ -102,16 +103,16 @@ const useFAQ = () => {
 
     const logsFromChoices = (choice_id) => {
         const l = label(choice(choice_id));
+        if (isAnswerExist(choice_id)) {
+            const qas = answersByChoice(choice_id).map(qa => answerLog(qa));
+            return [l, ...qas];
+        } else
         if (isQuestionExist(choice_id)) {
             const q = questionByChoice(choice_id)
             const ql = questionLog(q);
             console.log(q)
             const c = choicesByQuestion(q.id).map(c => choiceLog(c));
             return [l, ql, ...c];
-        } else
-        if (isAnswerExist(choice_id)) {
-            const qas = answersByChoice(choice_id).map(qa => answerLog(qa));
-            return [l, ...qas];
         }
         const errorLog = systemLog(0, '該当するカテゴリーが存在しません')
         return [l, errorLog];
