@@ -1,0 +1,227 @@
+[
+    {
+        "id": 1,
+        "question_id": 1,
+        "text": "研修サービス"
+    },
+    {
+        "id": 2,
+        "question_id": 1,
+        "text": "creaxta"
+    },
+    {
+        "id": 3,
+        "question_id": 1,
+        "text": "sakidori"
+    },
+    {
+        "id": 4,
+        "question_id": 1,
+        "text": "eラーニング育成パック"
+    },
+    {
+        "id": 5,
+        "question_id": 1,
+        "text": "upcoming"
+    },
+    {
+        "id": 6,
+        "question_id": 2,
+        "text": "公開型研修"
+    },
+    {
+        "id": 7,
+        "question_id": 2,
+        "text": "講師派遣型研修"
+    },
+    {
+        "id": 8,
+        "question_id": 2,
+        "text": "無料セミナー・体験会"
+    },
+    {
+        "id": 9,
+        "question_id": 2,
+        "text": "組織開発/その他サービス"
+    },
+    {
+        "id": 10,
+        "question_id": 7,
+        "text": "予約・お申し込みについて"
+    },
+    {
+        "id": 11,
+        "question_id": 7,
+        "text": "受講について"
+    },
+    {
+        "id": 12,
+        "question_id": 7,
+        "text": "お支払いについて"
+    },
+    {
+        "id": 13,
+        "question_id": 10,
+        "text": "グループワーク"
+    },
+    {
+        "id": 14,
+        "question_id": 10,
+        "text": "社会人基礎力診断"
+    },
+    {
+        "id": 15,
+        "question_id": 10,
+        "text": "マイナビ エンゲージメント・リサーチ"
+    },
+    {
+        "id": 16,
+        "question_id": 11,
+        "text": "申し込み方法について"
+    },
+    {
+        "id": 17,
+        "question_id": 11,
+        "text": "キャンセルについて"
+    },
+    {
+        "id": 18,
+        "question_id": 11,
+        "text": "申し込み内容変更について"
+    },
+    {
+        "id": 19,
+        "question_id": 12,
+        "text": "参加方法について"
+    },
+    {
+        "id": 20,
+        "question_id": 12,
+        "text": "オンライン研修について"
+    },
+    {
+        "id": 21,
+        "question_id": 12,
+        "text": "当日について"
+    },
+    {
+        "id": 22,
+        "question_id": 12,
+        "text": "その他"
+    },
+    {
+        "id": 23,
+        "question_id": 8,
+        "text": "実施形態について"
+    },
+    {
+        "id": 24,
+        "question_id": 8,
+        "text": "その他"
+    },
+    {
+        "id": 25,
+        "question_id": 3,
+        "text": "管理・運用"
+    },
+    {
+        "id": 26,
+        "question_id": 3,
+        "text": "料金・契約・納品"
+    },
+    {
+        "id": 27,
+        "question_id": 3,
+        "text": "受講環境・システム"
+    },
+    {
+        "id": 28,
+        "question_id": 4,
+        "text": "コンテンツ"
+    },
+    {
+        "id": 29,
+        "question_id": 4,
+        "text": "受講管理について"
+    },
+    {
+        "id": 30,
+        "question_id": 4,
+        "text": "納品について"
+    },
+    {
+        "id": 31,
+        "question_id": 5,
+        "text": "コンテンツについて"
+    },
+    {
+        "id": 32,
+        "question_id": 5,
+        "text": "受講管理について"
+    },
+    {
+        "id": 33,
+        "question_id": 5,
+        "text": "納品について"
+    },
+    {
+        "id": 34,
+        "question_id": 19,
+        "text": "学習コンテンツ"
+    },
+    {
+        "id": 35,
+        "question_id": 19,
+        "text": "システム"
+    },
+    {
+        "id": 36,
+        "question_id": 19,
+        "text": "管理運用"
+    },
+    {
+        "id": 37,
+        "question_id": 20,
+        "text": "学習管理"
+    },
+    {
+        "id": 38,
+        "question_id": 20,
+        "text": "申込・変更"
+    },
+    {
+        "id": 39,
+        "question_id": 20,
+        "text": "アカウント管理"
+    },
+    {
+        "id": 40,
+        "question_id": 20,
+        "text": "テスト管理"
+    },
+    {
+        "id": 41,
+        "question_id": 6,
+        "text": "お申し込みについて"
+    },
+    {
+        "id": 42,
+        "question_id": 6,
+        "text": "納品について"
+    },
+    {
+        "id": 43,
+        "question_id": 6,
+        "text": "コンテンツについて"
+    },
+    {
+        "id": 44,
+        "question_id": 22,
+        "text": "申込・変更"
+    },
+    {
+        "id": 45,
+        "question_id": 22,
+        "text": "その他"
+    }
+]
