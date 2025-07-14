@@ -10,7 +10,9 @@ const useFAQ = () => {
             choices: choicesJson,
             answers: answersJson,
         });
-    const [logs, setLog] = useState([]);
+    const [logs, setLogs] = useState([]);
+    const [numResponses, setNumResponses] = useState(0);
+    const [isResponseOver, setResponseOver] = useState(false);
 
 //   useEffect(() => {
 //     fetch('http://localhost:8000/api/faqs/')
@@ -128,6 +130,7 @@ const useFAQ = () => {
     const userValue = 'user';
     const choiceValue = 'choice';
     const answerValue = 'answer';
+    const overValue = 'over';
 
     const isSystem = (from) => {
         return (from === systemValue);
@@ -149,25 +152,31 @@ const useFAQ = () => {
         return (from === answerValue);
     };
 
+    const isOverError = (from) => {
+        return (from === overValue);
+    };
+
     const logType = (from, type) => {
         switch(type) {
             case 0:
-                return isSystem(from)
+                return isSystem(from);
             case 1:
-                return isUser(from)
+                return isUser(from);
             case 2:
-                return isChoice(from)
+                return isChoice(from);
             case 3:
-                return isMessage(from)
+                return isMessage(from);
             case 4:
-                return isAnswer(from)
+                return isAnswer(from);
+            case 5:
+                return isOverError(from);
             default:
                 return false
         };
     };
 
     const systemLog = (from, text) => {
-        const subject = [systemValue, userValue, choiceValue, answerValue][from];
+        const subject = [systemValue, userValue, choiceValue, answerValue, overValue][from];
         return {'from': subject, 'text': text};
     };
 
@@ -197,30 +206,50 @@ const useFAQ = () => {
     };
 
     const addLog = (log) => {
-        setLog((prev) => [...prev, log]);
+        setLogs((prev) => [...prev, log]);
     };
 
-    const addLogs = (logs) => {
-        setLog((prev) => [...prev, ...logs]);
+    const addLogs = (newLogs) => {
+        setLogs((prev) => [...prev, ...newLogs]);
     };
 
     const processAddLogs = (choice_id) => {
         const newLogs = logsFromChoices(choice_id);
         addLogs(newLogs);
+        processResponseOver();
     };
 
     const processSearchLogs = (word) => {
         const newLogs = logsFromSearch(word);
         addLogs(newLogs);
-    }
+        processResponseOver();
+    };
+
+    const processResponseOver = () => {
+        setNumResponses(numResponses + 1);
+        if (numResponses >= maxResponse()) {
+            addLog(overErrorLog());
+            console.log(overErrorLog())
+            console.log(logs)
+            setResponseOver(true);
+        };
+    };
 
     const getLogs = () => {
         return logs;
     };
 
+    const overErrorLog = () => {
+        return systemLog(4, '表示可能件数が規定数を超過しました。ページを再読み込みしてください。');
+    };
+
+    const maxResponse = () => {
+        return 10;
+    };
+
     return {
         getLogs, processAddLogs, processSearchLogs,
-        logType
+        logType, isResponseOver
     };
 };
 
